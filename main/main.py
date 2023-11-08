@@ -15,7 +15,9 @@ ticker = st.text_input("Ticker:", key="ticker")
 
 st.write("Ejemplo de uso de un Dataframe y Chart")
 
-data = yf.download(ticker, start=start, end = end, progress = True )
+#data = yf.download("AAPL", start="2020-01-01", end = "2023-01-01", progress = True )
+data = yf.download(ticker, start="2020-01-01", end = "2023-01-01", progress = True )
+
 
 st.table(data)
 
