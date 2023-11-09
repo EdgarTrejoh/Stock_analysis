@@ -4,6 +4,7 @@ import streamlit as st
 import yfinance as yf
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 
@@ -11,15 +12,44 @@ start = st.text_input("Fecha de inicio:", key="start")
 end = st.text_input("Fecha de fin:", key="end")
 ticker = st.text_input("Ticker:", key="ticker")
 
-#st.session_state.name
+st.write("Linear Regression")
 
-st.write("Ejemplo de uso de un Dataframe y Chart")
+if ticker !="" :   
+    data = yf.download(ticker, start="2020-01-01", end = "2023-01-01", progress = True )
+    st.table(data)
+else:
+        st.write("Nothing to show")
 
-#data = yf.download("AAPL", start="2020-01-01", end = "2023-01-01", progress = True )
-data = yf.download(ticker, start="2020-01-01", end = "2023-01-01", progress = True )
 
+data['Numbers']  = list(range(0, len(data)))
+
+X = np.array(data[['Numbers']])
+Y = data["Close"].values
+
+lin_model = LinearRegression().fit(X ,Y)
+print ('Intercept:', lin_model.intercept_)
+print ('Slope:' , lin_model.coef_)
+
+y_pred = lin_model.coef_ * X + lin_model.intercept_
+
+data['Pred'] = y_pred
+
+st.write("Predictor")
 
 st.table(data)
+
+fig, ax = plt.subplots() 
+data['Pred'].plot(ax=ax, linestyle = "-", lw=2)
+data['Close'].plot(ax=ax, lw=2)
+
+ax.set_title(f'Predict prices: {ticker}')
+
+st.pyplot(fig)
+
+st.write(r2_score(data['Close'], data['Pred']))
+
+st.write(lin_model.coef_ * len(data) + 5 + lin_model.intercept_)
+
 
 if st.checkbox("Show Dataframe and Chart"):
     chart_data = pd.DataFrame(
