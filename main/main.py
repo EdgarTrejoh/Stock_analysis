@@ -25,6 +25,7 @@ if ticker !="" :
 else:
         st.write("Nothing to show")
 
+#Cálculos:
 data['Numbers']  = list(range(0, len(data)))
 
 X = np.array(data[['Numbers']])
