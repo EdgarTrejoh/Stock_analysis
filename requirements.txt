@@ -33,6 +33,7 @@ packaging==23.2
 pandas==2.1.2
 peewee==3.17.0
 Pillow==10.1.0
+plotly==5.18.0
 protobuf==4.25.0
 pyarrow==14.0.1
 pydeck==0.8.1b0

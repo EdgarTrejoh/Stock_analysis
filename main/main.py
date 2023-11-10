@@ -1,4 +1,4 @@
-# Importar las librerias requeridas
+# Import the required libraries
 
 import streamlit as st
 import yfinance as yf
@@ -7,19 +7,23 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
+import plotly.graph_objects as go
 
-start = st.text_input("Fecha de inicio:", key="start")
-end = st.text_input("Fecha de fin:", key="end")
+# Define the corresponding ticker for the company
 ticker = st.text_input("Ticker:", key="ticker")
 
 st.write("Linear Regression")
 
+st.write("https://pypi.org/project/yfinance/")
+
 if ticker !="" :   
-    data = yf.download(ticker, start="2020-01-01", end = "2023-01-01", progress = True )
-    st.table(data)
+    data = yf.download(ticker, period = "5Y", progress = False)
+    data_2022 = data.loc["07-2023":]
+    data_2022.reset_index(inplace=True)
+    data.reset_index(inplace=True)
+    #st.table(data)
 else:
         st.write("Nothing to show")
-
 
 data['Numbers']  = list(range(0, len(data)))
 
@@ -34,21 +38,35 @@ y_pred = lin_model.coef_ * X + lin_model.intercept_
 
 data['Pred'] = y_pred
 
+data['Crec_Anual'] = data.Close.div(data.Close.iloc[0]).mul(100)
+
+# Crate the graphics 
+st.line_chart(data, x= 'Date', y='Crec_Anual', color="#FF0000")
+
+st.line_chart(data, x= 'Date', y=['Close'])
+
 st.write("Predictor")
-
-st.table(data)
-
 fig, ax = plt.subplots() 
 data['Pred'].plot(ax=ax, linestyle = "-", lw=2)
 data['Close'].plot(ax=ax, lw=2)
 
 ax.set_title(f'Predict prices: {ticker}')
-
 st.pyplot(fig)
 
 st.write(r2_score(data['Close'], data['Pred']))
-
 st.write(lin_model.coef_ * len(data) + 5 + lin_model.intercept_)
+
+# Candlesticks
+figura  = go.Figure(data = [go.Candlestick(x=data_2022['Date'], 
+                                open = data_2022['Open'],
+                                high = data_2022['High'],
+                                low = data_2022['Low'],
+                                close = data_2022['Close'])])
+
+st.plotly_chart(figura, use_container_width = True)
+
+
+
 
 
 if st.checkbox("Show Dataframe and Chart"):
