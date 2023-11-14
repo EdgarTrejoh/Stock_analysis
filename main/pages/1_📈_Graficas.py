@@ -53,6 +53,37 @@ data['SMA_S'] = data['Close'].rolling(SMA_S).mean()
 data['SMA_L'] = data['Close'].rolling(SMA_L).mean()
 data_SMA = data.loc["2022":]
 
+# 4.7 Maximum Drawdown
+rolling_max = data['Close'].cummax()
+daily_drawdown = data['Close'] / rolling_max - 1
+max_drawdown = daily_drawdown.cummin().iloc[-1]
+
+
+#4.8 Estadísticas 
+start = data['Date'].iloc[0]
+end = data['Date'].iloc[-1]
+mean = str(round(data['Close'].mean(),2))
+max = str(round(data['Close'].max(),2))
+min = str(round(data['Close'].min(),2))
+count = str(round(data['Close'].count(),2))
+
+data_resume = {'Fecha de inicio': [start],
+            'Fecha de fin': [end],
+            "Promedio precio de cierre": [mean],
+            "Precio cierre máximo": [max],
+            "Precio cierre mìnimo": [min],
+            "Numero de observaciones": [count],
+            "Rendimiento histórico anual simple": [str(rendimiento_anual_simple)+ "%"],
+            "Volatilidad anual": [str(round(volatilidad,2))+ "%"],
+            "CAGR": [str(CAGR)+ "%"],
+            "Maximum Drawdown": [round(max_drawdown,2)]
+            }
+
+
+resume = pd.DataFrame(data_resume, index=["Valor"]) 
+resume = resume.T
+
+
 st.markdown(
      """
      > ### 📂 Indicadores Financieros 
@@ -60,11 +91,10 @@ st.markdown(
      """
      )
 
-st.markdown(f" **- Rendimiento histórico anual simple** es de: " + str(rendimiento_anual_simple)+ "%")
-st.markdown(f" **- VolatilIdad anual** es de: " + str(volatilidad)+ "%")
-st.markdown(f" **- CAGR** es de: " + str(CAGR)+ "%")
+st.dataframe(resume, hide_index= False)
 
-metricas = data['Close'].loc['2023': ].describe() 
+
+metricas = data['Close'].describe() 
 
 st.markdown(
      """

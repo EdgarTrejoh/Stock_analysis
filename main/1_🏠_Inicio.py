@@ -22,6 +22,14 @@ st.markdown(
      ### Want to learn more?
     - Librería YFinance Python [YFinance](https://pypi.org/project/yfinance/)
 
+    - Microsoft (MSFT)
+    - Apple (AAPL)
+    - Google (GOOG)
+    - Amazon (AMZN)
+    - Tesla (TSLA)
+    - Walmart (WMT)
+
+     
      ### See more complex demos
 
      """
