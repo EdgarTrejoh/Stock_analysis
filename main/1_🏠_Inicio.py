@@ -5,7 +5,7 @@ st.set_page_config(
     page_icon="👋",
 )
 
-st.write("# Bienvenido al Sitio de Información Financiera! 👋")
+st.write("# Welcome to: Stock Analysis App! 👋")
 
 
 st.markdown(
