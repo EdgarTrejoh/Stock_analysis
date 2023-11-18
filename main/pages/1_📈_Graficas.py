@@ -28,10 +28,22 @@ elif empresa == "Walmart":
      ticker =  "WMT"
 
 #3. Generar la información:
-data = yf.download(ticker, period = "5Y", progress = False)
-data_2022 = data.loc["07-2023":]
-data_2022.reset_index(inplace=True)
+
+def load_stock(stock):
+  data = yf.download(stock, period = "5Y", progress = False)
+  data.reset_index(inplace=True)
+  return data
+
+data_load_state = st.markdown(":red[Loading data...]")
+data = load_stock(ticker)
 data.reset_index(inplace=True)
+data_load_state.markdown(':blue[Loading data... done!]')
+
+#data = yf.download(ticker, period = "5Y", progress = False)
+data23 = data.loc[data['Date'] > "07-2023"]
+#data_2022 = data.loc["01-07-2023":]
+data23.reset_index(inplace=True)
+#data.reset_index(inplace=True)
 
 #4. Realizar los modelos:
 #4.1 Modelo de Regresión lineal:
@@ -125,7 +137,7 @@ resume = resume.T
 #5.1 Estadísticas
 st.markdown(
      """
-     > ### 📊 Statistics
+     > ### 📊 :blue[Statistics]
 
      """
      )
@@ -140,24 +152,22 @@ st.dataframe(resume, hide_index= False, width=340, height=455)
 
 #5.2 Gráficos:
 #5.2.1 Time Series
-
 st.markdown(
      """
-     > ### 📈 Technichal Charts
+     > ### 📈 :blue[Technichal Charts]
      
-     **1. Time Series**
+     >> ### :green[1. Time Series]
 
      """
      )
 
 config = {
      'modeBarButtonsToRemove': ['zoom', 'pan'],
-    
 }
 
 figura_line = px.line(data, x='Date', y=['Close', 'Open', 'High', 'Low'])
 figura_line.update_xaxes(title_text="Date")
-figura_line.update_yaxes(title_text="Price",
+figura_line.update_yaxes(title_text="Price USD($)",
                          tickprefix="$")
 figura_line.update_layout(title_text=f"{empresa} - Time Series",
                          title_font=dict(color="#08123E", 
@@ -166,11 +176,10 @@ figura_line.update_layout(title_text=f"{empresa} - Time Series",
 st.plotly_chart(figura_line, use_container_width=True)
 
 #5.2.2 Crecimiento en 5Y
-
 st.markdown(
      """
          
-    **2. Crecimiento de 5Y a la fecha**
+    >> ### :green[2. Crecimiento de 5Y a la fecha]
 
      """
      )
@@ -189,31 +198,29 @@ grafica_5Y.update_layout(title_text=f"{empresa} - Crecimiento 5Y",
 
 st.plotly_chart(grafica_5Y, use_container_width=True)
 
-#5.2.3 Gràfico de Vela Candlesticks
-
+#5.2.3 Gráfico de Vela Candlesticks
 st.markdown(
      """   
-    **3. Candlestick**
+    >> ### :green[3. Candlestick]
     
     *Información de Julio 2023 a la fecha.*
 
      """
      )
 
-figura  = go.Figure(data = [go.Candlestick(x=data_2022['Date'], 
-                                open = data_2022['Open'],
-                                high = data_2022['High'],
-                                low = data_2022['Low'],
-                                close = data_2022['Close'])])
+figura  = go.Figure(data = [go.Candlestick(x=data23['Date'], 
+                                open = data23['Open'],
+                                high = data23['High'],
+                                low = data23['Low'],
+                                close = data23['Close'])])
 
 st.plotly_chart(figura, use_container_width = True)
 
-#5.2.4 Histográmas
-
+#5.2.4 Histogramas
 st.markdown(
      """
     
-    **4. Hitograms**
+    >> ### :green[4. Hitograms]
 
      """
      
@@ -228,7 +235,7 @@ histogram_price = px.histogram(data, x=data['Close'],
                          title=f"Histogram Close Price: {empresa}" )
 st.plotly_chart(histogram_price, use_container_width = True)
 
-#5.2.4.2 Histograma con rendimientos
+#5.2.4.2 Histograma rendimiento diario
 histogram = px.histogram(data, x=data['DailyReturn'], 
                          nbins=30,
                          color_discrete_sequence=['indianred'],
@@ -237,12 +244,35 @@ histogram = px.histogram(data, x=data['DailyReturn'],
                          title=f"Histogram Daily Returns: {empresa}" )
 st.plotly_chart(histogram, use_container_width = True)
 
-#5.2.5 Simple Moving Average (SMA)
+#5.2.5 Moving Average
+st.markdown(
+     """
+          
+     >> ### :green[5. Moving Average]
 
+     """
+     )
+#:green[Additional Information:]
+periods = st.slider(":red[**Selecciona el periodo (Días)**]", 10 ,100, step=10)
+data['MA'] = data['Close'].rolling(periods).mean()
+
+fig_MA =  px.line(data, 
+                  x='Date',
+                  y=['Close', 'MA'],
+                  color_discrete_sequence= px.colors.sequential.GnBu_r, 
+                  #px.colors.sequential.Plasma_r,
+                  title=f"Moving Average: {empresa}  \n Periods: {periods}")
+
+fig_MA.update_layout(title_font=dict(color="#3408D9", 
+                                         size=18))
+
+st.plotly_chart(fig_MA)
+
+#5.2.5 Simple Moving Average (SMA)
 st.markdown(
      """
     
-    **5. Simple Moving Average (SMA)**
+    >> ### :green[6. Simple Moving Average (SMA)]
     
      """
      )
@@ -262,7 +292,7 @@ st.plotly_chart(fig_SMA)
 st.markdown(
      """
     
-    **6. MACD (Moving Average Convergence Divergence)**
+    >> ### :green[7. MACD (Moving Average Convergence Divergence)]
     
      """
      )
@@ -296,26 +326,50 @@ fig_MACD.update_yaxes(title_text="<b>secondary</b> yaxis title", secondary_y=Tru
 st.plotly_chart(fig_MACD)
 
 
-
-figura_boll_band = px.line(data, x='Date', y=['TypicalPrice','BOLU', 'BOLD'])
-figura_boll_band.update_xaxes(title_text="Date")
-figura_boll_band.update_yaxes(title_text="Price",
-                         tickprefix="$")
-figura_boll_band.update_layout(title_text=f"{empresa} - Bollinger Bands",
-                         title_font=dict(color="#08123E", 
-                                         size=18))
-
-st.plotly_chart(figura_boll_band, use_container_width=True)
-
-
-
-
-
-#6 Gràfico Tendencia precio de cierre
+#5.2.7 Bollinger bands
 st.markdown(
      """
     
-    **6. Trending - Close Price**
+    >> ### :green[8. Bollinger Bands]
+    
+     """
+     )
+
+fig_bollinger_band = go.Figure()
+
+fig_bollinger_band.add_trace(go.Scatter(x=data['Date'], y=data['TypicalPrice'],
+                        fill=None,
+                        mode='lines',
+                        line_color='#EA6E43',
+                        name = "Close"
+                         ))
+fig_bollinger_band.add_trace(go.Scatter(x=data['Date'], y=data['BOLU'],
+                         fill = 'tonexty',
+                         #fill="toself",
+                         mode = "lines",
+                         line_color= "#4380EA",
+                         name= "BOLU"))
+fig_bollinger_band.add_trace(go.Scatter(x=data['Date'], y=data['BOLD'],
+                         fill = 'tonexty',
+                         #fill='tozeroy',
+                         mode = "lines",
+                         line_color= "#4380EA",
+                         name= "BOLD"))
+fig_bollinger_band.update_xaxes(title_text="Date")
+fig_bollinger_band.update_yaxes(title_text="Price",
+                         tickprefix="$")
+fig_bollinger_band.update_layout(title_text=f"{empresa} - Bollinger Bands",
+                         title_font=dict(color="#08123E", 
+                                         size=18))
+
+st.plotly_chart(fig_bollinger_band, use_container_width=True)
+
+
+#6 Gráfico Tendencia precio de cierre
+st.markdown(
+     """
+     
+    > ### :blue[Trending - Close Price]
     
      """
      )
