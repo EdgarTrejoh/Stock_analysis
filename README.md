@@ -8,7 +8,7 @@ Source: [Yahoo Finance](https://finance.yahoo.com/?fr=sycsrp_catchall)
 
 **Developed by** @Edgatrejoh **powerd by Python** & [yfinance](https://pypi.org/project/yfinance/)
 
-Analysis from 6 most popula Companies by S&P500
+Analysis from 6 most popular Companies by S&P500
 
 | No. | Stock |
 |-----:    |-----------|
