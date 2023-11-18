@@ -66,6 +66,28 @@ st.write(
 Streamlit. We're generating a bunch of random numbers in a loop for around
 5 seconds. Enjoy!"""
 
-
-
 )
+
+st.latex("""
+         Desviación Estándar
+
+$ sigma_{p} = \sigma_{daily}\times \sqrt{p}$
+- $\sigma_{annually} = \sigma_{daily}\times \sqrt{252}$
+
+$$
+ln(\frac{P_t}{P_{t-1}})
+$$
+
+
+"""
+         )
+
+st.markdown(
+     """   
+
+# :green[Additional Information:]
+
+1. [Simple Moving Average (SMA): Investopedia](https://www.investopedia.com/terms/s/sma.asp)
+
+     """
+     )
