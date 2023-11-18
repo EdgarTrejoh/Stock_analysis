@@ -2,7 +2,7 @@
 
 ## Notice
 
-**Informatiov only for educational propouses**
+**Information only for educational propouses**
 
 Source: [Yahoo Finance](https://finance.yahoo.com/?fr=sycsrp_catchall)
 
