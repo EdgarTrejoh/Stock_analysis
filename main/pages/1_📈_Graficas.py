@@ -76,16 +76,16 @@ var = data['DailyReturn'].var()
 volatilidad = round(data['DailyReturn'].std()*252**0.5,4)*100
 
 #4.6 SMA
-SMA_S = 10
-SMA_L = 50
-data['SMA_S'] = data['Close'].rolling(SMA_S).mean()
-data['SMA_L'] = data['Close'].rolling(SMA_L).mean()
+SMA10 = 10
+SMA50 = 50
+data['SMA10'] = data['Close'].rolling(SMA10).mean()
+data['SMA50'] = data['Close'].rolling(SMA50).mean()
 data_SMA = data.loc["2022":]
 
 #4.7 Maximum Drawdown
 rolling_max = data['Close'].cummax()
 daily_drawdown = data['Close'] / rolling_max - 1
-max_drawdown = daily_drawdown.cummin().iloc[-1]
+max_drawdown = (daily_drawdown.cummin().iloc[-1])*100
 
 #4.8 Standard Deviation
 standard_deviation = data['DailyReturn'].std()
