@@ -68,22 +68,23 @@ Streamlit. We're generating a bunch of random numbers in a loop for around
 
 )
 
-st.latex("""
+st.write("""
          Desviación Estándar
+     
+         
+$sigma_{p} = \sigma_{daily}\times \sqrt{p}$
 
-$ sigma_{p} = \sigma_{daily}\times \sqrt{p}$
 - $\sigma_{annually} = \sigma_{daily}\times \sqrt{252}$
-
-$$
-ln(\frac{P_t}{P_{t-1}})
-$$
 
 
 """
          )
 
-st.markdown(
+st.text(
      """   
+
+$ln(\frac{P_t}{P_{t-1}})$
+
 
 # :green[Additional Information:]
 

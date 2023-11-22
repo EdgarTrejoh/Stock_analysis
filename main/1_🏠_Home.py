@@ -1,21 +1,21 @@
 import streamlit as st
 
 st.set_page_config(
-    page_title="Hello",
-    page_icon="👋",
+    page_title="Home",
+    page_icon="🏠",
 )
 
-st.write("# Welcome to: Stock Analysis App! 👋")
+st.write("# Welcome to: Stock Analysis App! 🚀")
 
 
 st.markdown(
      """
-     > ### INDICADORES FINANCIEROS
+     > ### Key Features
 
      Aqui encontrarás diferente información como:
 
-     1. Rendimiento simple anual 👈.
-     2. CAGR.
+     1. RoR 👈.
+     2. Log. Return
      3. Gráfico de velas.
      4. Modelo de Regresión Lineal. 
 

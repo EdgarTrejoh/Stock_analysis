@@ -10,6 +10,8 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 from plotly.subplots import make_subplots
 
+st.set_page_config(page_title="TechnicalAnalysis", page_icon="📈")
+
 #2. Definir las variables
 stocks = ("Microsoft", "Apple", "Google", "Amazon", "Tesla", "Walmart")
 empresa =st.selectbox(":blue[***Please select an option:***]", stocks) 
@@ -28,7 +30,7 @@ elif empresa == "Walmart":
      ticker =  "WMT"
 
 #3. Generar la información:
-
+@st.cache_data
 def load_stock(stock):
   data = yf.download(stock, period = "5Y", progress = False)
   data.reset_index(inplace=True)
@@ -277,7 +279,7 @@ st.markdown(
      """
      )
 
-fig_SMA =  px.line(data, x='Date',y=['Close', 'SMA_S','SMA_L'],
+fig_SMA =  px.line(data, x='Date',y=['Close', 'SMA10','SMA50'],
                    title=f"SMA: {empresa} ")
 
 fig_SMA.update_layout(title_font=dict(color="#3408D9", 
