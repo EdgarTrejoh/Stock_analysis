@@ -10,7 +10,10 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 from plotly.subplots import make_subplots
 
-st.set_page_config(page_title="TechnicalAnalysis", page_icon="📈")
+st.set_page_config(
+     page_title="TechnicalAnalysis", 
+     page_icon="📈"
+     )
 
 #2. Definir las variables
 stocks = ("Microsoft", "Apple", "Google", "Amazon", "Tesla", "Walmart")
@@ -137,14 +140,14 @@ resume = resume.T
 
 #5. Visualización de resultados
 #5.1 Estadísticas
+st.title(empresa)
+
 st.markdown(
      """
      > ### 📊 :blue[Statistics]
 
      """
      )
-
-st.title(empresa)
 
 st.dataframe(resume, hide_index= False, width=340, height=455)
 
