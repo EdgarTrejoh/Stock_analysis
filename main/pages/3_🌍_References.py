@@ -6,7 +6,7 @@ st.markdown("# Conceptos")
 
 st.markdown(
      """   
-    **2. RoR - Rate Of Return**
+    **:green[2. RoR - Rate Of Return]**
 
      """
      )
@@ -24,20 +24,14 @@ st.markdown(
 - $V_f$: Final value
 - $RoR$: Rate of Return
 
-[Fuente: Investopedia](https://www.investopedia.com/terms/r/rateofreturn.asp)
+[Source: Investopedia](https://www.investopedia.com/terms/r/rateofreturn.asp)
 
      """
      )
 
-
-
-
-
-
-
 st.markdown(
      """   
-    **3. Compound Annual Growth Rate**
+    **:green[3. Compound Annual Growth Rate]**
 
      """
      )
@@ -55,7 +49,7 @@ st.markdown(
 - $V_f$: Final value
 - $n$: number of period
 
-[Fuente: Investopedia](https://www.investopedia.com/terms/c/cagr.asp)
+[Source: Investopedia](https://www.investopedia.com/terms/c/cagr.asp)
 
      """
      )
@@ -68,10 +62,15 @@ Streamlit. We're generating a bunch of random numbers in a loop for around
 
 )
 
+st.markdown(
+     """   
+    **:green[4. Desviación Estándar]**
+
+     """
+     )
+
 st.write("""
-         Desviación Estándar
-     
-         
+          
 $sigma_{p} = \sigma_{daily}\times \sqrt{p}$
 
 - $\sigma_{annually} = \sigma_{daily}\times \sqrt{252}$

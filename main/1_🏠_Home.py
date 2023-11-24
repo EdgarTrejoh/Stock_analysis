@@ -39,6 +39,15 @@ st.markdown(
      3. Gráfico de velas.
      4. Modelo de Regresión Lineal. 
 
+     Examples financial ratios
+
+    | Technical Analysis | Fudamental Analysis |
+    |-----------|-----------|
+    |MACD| Profitability Ratios|
+    |SMA| Progit Margin|
+    |EMA| Turnover-control ratios|
+    |Bollinger Bands| Laverage and liquity ratios|
+    
      ### Want to learn more?
     - Librería YFinance Python [YFinance](https://pypi.org/project/yfinance/)
 
@@ -49,7 +58,7 @@ st.markdown(
     - Walmart (WMT)
 
      
-     ### See more complex demos
+     ### See more:
 
      """
      )  
@@ -57,3 +66,6 @@ st.markdown(
 
 st.markdown("[![Microsoft](https://www.microsoft.com/investor/reports/ar22/img/site-logo.svg)](https://www.microsoft.com/investor/reports/ar22/index.html#home)")
 
+st.markdown(
+    "[![Alphabet](https://www.abc.xyz/assets/4d/68/600ef2c64455b2f1aafdd81b1732/ir-logo-2x.png=n-w400-h94)](https://abc.xyz/investor/)"
+)
