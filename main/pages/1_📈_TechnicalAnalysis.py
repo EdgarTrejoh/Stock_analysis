@@ -16,7 +16,7 @@ st.set_page_config(
      )
 
 #2. Definir las variables
-stocks = ("Microsoft", "Apple", "Google", "Amazon", "Tesla", "Walmart")
+stocks = ("Microsoft", "Apple", "Google", "Amazon", "Tesla", "Netflix")
 empresa =st.selectbox(":blue[***Please select an option:***]", stocks) 
 
 if empresa == "Microsoft":
@@ -29,8 +29,8 @@ elif empresa == "Amazon":
      ticker = "AMZN" 
 elif empresa == "Tesla":
      ticker = "TSLA"
-elif empresa == "Walmart":
-     ticker =  "WMT"
+elif empresa == "Netflix":
+     ticker =  "NFLX"
 benchmark = "^GSPC"
 
 #3. Generar la información:
