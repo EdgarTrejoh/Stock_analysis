@@ -5,12 +5,28 @@ st.set_page_config(
     page_icon="🏠",
 )
 
-st.write("# Welcome to: Stock Analysis App! 🚀")
+#st.write("# Welcome to: Stock Analysis App! 🚀")
+
+st.markdown("# :green[Welcome to: Stock Analysis App!🚀]")
+
+st.markdown("""
+            #### :green[Developed by:]🐢 [Edgar Trejo](https://www.linkedin.com/in/edgar-trejo-03077748) 🐢
+            ##### :green[Wiht: #Streamlit #python #plotly #yfinance #pandas #NumPy #matplotlib]
+            """
+)
+
+"----------"
 
 st.markdown(
-     """
-      > ### :red[Notice]
+    """
+    >> ### :red[Important Information] ✅
+    """
+    )
 
+"----------"
+
+st.markdown(
+    """
     The information provided below has been prepared for academic and  informational purposes. 
     
     Any opinions, analyses, prices, or other content do not constitute investment advice and do not represent an investment recommendation. 
@@ -32,14 +48,7 @@ st.markdown(
  
     >> ### :red[Key Features]
 
-     Aqui encontrarás diferente información como:
-
-     1. RoR 👈.
-     2. Log. Return
-     3. Gráfico de velas.
-     4. Modelo de Regresión Lineal. 
-
-     Examples financial ratios
+    
 
     | Technical Analysis | Fudamental Analysis |
     |-----------|-----------|
@@ -47,25 +56,15 @@ st.markdown(
     |SMA| Progit Margin|
     |EMA| Turnover-control ratios|
     |Bollinger Bands| Laverage and liquity ratios|
+
+    ### And more
     
-     ### Want to learn more?
-    - Librería YFinance Python [YFinance](https://pypi.org/project/yfinance/)
-
-    - Microsoft (MSFT)       - Apple (AAPL)
-    - Google (GOOG)
-    - Amazon (AMZN)
-    - Tesla (TSLA)
-    - Walmart (WMT)
-
-     
-     ### See more:
-
      """
      )  
 
 
-st.markdown("[![Microsoft](https://www.microsoft.com/investor/reports/ar22/img/site-logo.svg)](https://www.microsoft.com/investor/reports/ar22/index.html#home)")
+#st.markdown("[![Microsoft](https://www.microsoft.com/investor/reports/ar22/img/site-logo.svg)](https://www.microsoft.com/investor/reports/ar22/index.html#home)")
 
-st.markdown(
-    "[![Alphabet](https://www.abc.xyz/assets/4d/68/600ef2c64455b2f1aafdd81b1732/ir-logo-2x.png=n-w400-h94)](https://abc.xyz/investor/)"
-)
+#st.markdown(
+#    "[![Alphabet](https://www.abc.xyz/assets/4d/68/600ef2c64455b2f1aafdd81b1732/ir-logo-2x.png=n-w400-h94)](https://abc.xyz/investor/)"
+#)

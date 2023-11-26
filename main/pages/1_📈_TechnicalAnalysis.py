@@ -15,6 +15,10 @@ st.set_page_config(
      page_icon="📈"
      )
 
+st.markdown("# :green[1. Technical Analysis 📈]")
+
+"----------"
+
 #2. Definir las variables
 stocks = ("Microsoft", "Apple", "Google", "Amazon", "Tesla", "Netflix")
 empresa =st.selectbox(":blue[***Please select an option:***]", stocks) 
@@ -40,11 +44,18 @@ def load_stock(stock):
   data.reset_index(inplace=True)
   return data
 
+@st.cache_data
+def load_benchmark(bench):
+     data_benchmark = yf.download(benchmark, period = "5Y", progress = False)
+     data_benchmark.reset_index(inplace=True)
+     return data_benchmark
+
 data_load_state = st.markdown(":red[Loading data...]")
 data = load_stock(ticker)
-data_benchmark = yf.download(benchmark, period = "5Y", progress = False)
-data_benchmark.reset_index(inplace=True)
-data.reset_index(inplace=True)
+data_benchmark = load_benchmark(benchmark)
+#data_benchmark = yf.download(benchmark, period = "5Y", progress = False)
+#data_benchmark.reset_index(inplace=True)
+#data.reset_index(inplace=True)
 data_load_state.markdown(':blue[Loading data... done!]')
 
 #st.dataframe(data)
@@ -359,7 +370,7 @@ fig_MA =  px.line(
      y=['Close', 'MA'],
      color_discrete_sequence= px.colors.sequential.GnBu_r, 
      #px.colors.sequential.Plasma_r,
-     title=f"{empresa} : Simple Moving Average. Periods: {periods} days."
+     title=f"{empresa} : Moving Average. Periods: {periods} days."
      )
 
 fig_MA.update_layout(
@@ -438,8 +449,8 @@ fig_MACD.update_layout(
 
 fig_MACD.update_xaxes(title_text="Date")
 
-fig_MACD.update_yaxes(title_text="<b>Close</b> Price ($)", secondary_y=False)
-#fig_MACD.update_yaxes(title_text="<b>secondary</b> yaxis title", secondary_y=True)
+#fig_MACD.update_yaxes(title_text="<b>Close</b> Price ($)", secondary_y=False)
+fig_MACD.update_yaxes(title_text="<b>Close</b> Price ($)", secondary_y=True)
 
 st.plotly_chart(fig_MACD)
 

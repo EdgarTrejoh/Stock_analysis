@@ -6,6 +6,10 @@ st.set_page_config(
     page_icon="📊"
     )
 
+st.markdown("# :green[2. Fundamental Analysis 📊 ]")
+
+"----------"
+
 image = Image.open("./main/img/workin.gif")
 
 #st.markdown(
