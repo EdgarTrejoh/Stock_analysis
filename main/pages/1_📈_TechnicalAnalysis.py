@@ -53,18 +53,12 @@ def load_benchmark(bench):
 data_load_state = st.markdown(":red[Loading data...]")
 data = load_stock(ticker)
 data_benchmark = load_benchmark(benchmark)
-#data_benchmark = yf.download(benchmark, period = "5Y", progress = False)
-#data_benchmark.reset_index(inplace=True)
-#data.reset_index(inplace=True)
 data_load_state.markdown(':blue[Loading data... done!]')
 
-#st.dataframe(data)
+"----------"
 
-#data = yf.download(ticker, period = "5Y", progress = False)
 data23 = data.loc[data['Date'] > "07-2023"]
-#data_2022 = data.loc["01-07-2023":]
 data23.reset_index(inplace=True)
-#data.reset_index(inplace=True)
 
 #4. Realizar los modelos:
 #4.1 Modelo de Regresión lineal:
@@ -87,31 +81,31 @@ rendimiento_anual_simple = round(data['DailyReturn'].mean()*252, 2)*100
 
 #4.3.1 Rendimiento logarítmico
 data['LogReturn'] = np.log(data.Close/data.Close.shift(1)).dropna() 
-rendimiento_anual_simple = round(data['DailyReturn'].mean()*252, 2)*100
-log_return = data['LogReturn'].mean()*252
+log_return = (data['LogReturn'].mean()*252)*100
 
 #4.4 CARG
 CAGR = round((((data['Close'].iloc[-1] / (data['Close'].iloc[0])) ** (1/ len(data['Close'])) -1)*100)*252,2)
 
-#4.5 Varianza
-var = data['DailyReturn'].var()
-volatilidad = round(data['DailyReturn'].std()*252**0.5,4)*100
+#4.5 Standard Deviation
+standard_deviation = data['DailyReturn'].std() # Daily return
+standard_deviation_price = data['Close'].std() # Close price 
 
-#4.6 SMA
+#4.6 Varianza - Desviación Estándar [Daily Return]
+var = data['DailyReturn'].var()
+#volatilidad = round(data['DailyReturn'].std()*252**0.5,4)*100 # Option 1
+volatilidad = (data['DailyReturn'].std()* np.sqrt(252))*100 #Option 2
+
+#4.7 SMA
 SMA10 = 10
 SMA50 = 50
 data['SMA10'] = data['Close'].rolling(SMA10).mean()
 data['SMA50'] = data['Close'].rolling(SMA50).mean()
 data_SMA = data.loc["2022":]
 
-#4.7 Maximum Drawdown
+#4.8 Maximum Drawdown
 rolling_max = data['Close'].cummax()
 daily_drawdown = data['Close'] / rolling_max - 1
 max_drawdown = (daily_drawdown.cummin().iloc[-1])*100
-
-#4.8 Standard Deviation
-standard_deviation = data['DailyReturn'].std()
-standard_deviation_price = data['Close'].std()
 
 #4.9 MACD (Moving Average Convergence Divergence)
 exponential_small = data['Close'].ewm(span=8, adjust= False).mean() # ewm = Provide exponentially weighted (EW) calculations.
@@ -119,7 +113,7 @@ exponental_large =  data['Close'].ewm(span=17, adjust= False).mean()
 data['MACD'] = exponential_small - exponental_large 
 data['MACD_Signal_Line'] = data['MACD'].ewm(span=9, adjust=False).mean()
 
-#4.10 MACD (Moving Average Convergence Divergence)
+#4.10 Bollinger Bands
 data['TypicalPrice'] =(data['Close'] + data['High']+ data['Low']) / 3 
 data['Std'] = data['TypicalPrice'].rolling(20).std(ddof=0)
 data['MA-Close'] = data['TypicalPrice'].rolling(20).mean()
@@ -135,7 +129,7 @@ min = str(round(data['Close'].min(),2))
 count = str(round(data['Close'].count(),2))
 standard_deviation = str(round(standard_deviation,2))
 standard_deviation_price = str(round(standard_deviation_price,2))
-log_return = str(round(log_return,2)*100)
+log_return = str(round(log_return,2))
 
 #4.10.1 Dataframe: Resumen de Indicadores 
 data_resume = {'Start Date': [start],
@@ -147,8 +141,8 @@ data_resume = {'Start Date': [start],
                "Std (Close Price)": [standard_deviation_price],
                "RoR": [str(rendimiento_anual_simple)+ "%"],
                "Log. Return": [str(log_return) + "%"],
-               "Volatility": [str(round(volatilidad,2))+ "%"],
                "CAGR": [str(CAGR)+ "%"],
+               "Volatility": [str(round(volatilidad,2))+ "%"],               
                "Maximum Drawdown": [str(round(max_drawdown,2))+"%"]
             }
 
@@ -172,12 +166,14 @@ st.dataframe(resume, hide_index= False, width=340, height=455)
 #st.text(metricas)
 #st.dataframe(data)
 
+st.text(len(data)* "*")
+
 #5.2 Gráficos:
 #5.2.1 Time Series
 st.markdown(
      """
-     > ### 📈 :blue[Technichal Charts]
-     
+     > ### 📈 :blue[Charts]
+     >
      >> ### :green[1. Time Series]
 
      """
@@ -190,7 +186,8 @@ config = {
 figura_line = px.line(
      data, 
      x='Date', 
-     y=['Close', 'Open', 'High', 'Low']
+     y = ['Close']
+     #y=['Close', 'Open', 'High', 'Low']
      )
 
 figura_line.update_xaxes(title_text="Date")
@@ -217,11 +214,11 @@ daily_return_chart = px.line(
      )
 
 daily_return_chart.update_yaxes(
-     title_text="Daily Return (%)"
+     title_text="RoR (%)"
      )
 
 daily_return_chart.update_layout(
-     title_text=f"{empresa} - Daily Return (%)",
+     title_text=f"{empresa} - Daily Return RoR (%)",
      title_font=dict(
           color="#027034",
           size=20
@@ -342,7 +339,7 @@ histogram = px.histogram(
      )
 
 histogram.update_layout(
-     title_text=f"{empresa} : Daily Return",
+     title_text=f"{empresa} : Daily RoR",
      title_font=dict(
           color="#027034", 
           size=20
@@ -526,11 +523,31 @@ st.markdown(
      """
      )
 
-fig, ax = plt.subplots() 
-data['Pred'].plot(ax=ax, linestyle = "-", lw=2)
-data['Close'].plot(ax=ax, lw=2)
-ax.set_title(f'{ticker}')
-st.pyplot(fig)
+
+trending_close_price =  px.line(
+     data, 
+     x='Date',
+     y=['Pred', 'Close'],
+     color_discrete_sequence= px.colors.sequential.GnBu_r, 
+     #px.colors.sequential.Plasma_r,
+     title=f"{empresa} : Trending close price."
+     )
+
+trending_close_price.update_layout(
+     title_font=dict(
+          color="#027034", 
+          size=20
+          )
+     )
+
+st.plotly_chart(trending_close_price)
+
+
+#fig, ax = plt.subplots() 
+#data['Pred'].plot(ax=ax, linestyle = "-", lw=2)
+#data['Close'].plot(ax=ax, lw=2)
+#ax.set_title(f'{ticker}')
+#st.pyplot(fig)
 
 #st.write(r2_score(data['Close'], data['Pred']))
 #st.write(lin_model.coef_ * len(data) + 5 + lin_model.intercept_)

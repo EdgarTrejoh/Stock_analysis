@@ -5,16 +5,37 @@ st.set_page_config(
     page_icon="🏠",
 )
 
-#st.write("# Welcome to: Stock Analysis App! 🚀")
+st.markdown(
+    """
+    <style>
+    .css-1jc7ptx, .e1ewe7hr3, .viewerBadge_container__1QSob,
+    .styles_viewerBadge__1yB5_, .viewerBadge_link__1S137,
+    .viewerBadge_text__1JaDK {
+        display: none;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
-st.markdown("# :green[Welcome to: Stock Analysis App!🚀]")
+#st.write("# Welcome to Financials analysis for the main stocks in the S&P 500 v1.0 ! 🚀")
+
+st.markdown("# :green[Welcome to Financials analysis for the main stocks in the S&P 500 🚀]")
 
 st.markdown("""
             #### :green[Developed by:]🐢 [Edgar Trejo](https://www.linkedin.com/in/edgar-trejo-03077748) 🐢
-            ##### :green[Wiht: #Streamlit #python #plotly #yfinance #pandas #NumPy #matplotlib]
             """
 )
 
+st.markdown("##### :green[v1.0. Technical Anaylsis]")
+
+st.markdown(
+    """
+    **This demo shows the use of *Streamlit* 
+    for data analysis and data visualization with Python code, 
+    powered with libraries such as yfinance, Plotly, and others.**
+    """
+)
 "----------"
 
 st.markdown(
@@ -42,7 +63,7 @@ st.markdown(
     - Investment timeframe
     - And other relevant factors. 
     
-    Undertaking any form of investment is not recommended without specialized guidance and without having conducted a thorough analysis and assessment, including the investment instrument, market conditions (macro and microeconomic analysis), among other reelvant indicators.
+    Undertaking any form of investment is not recommended without specialized guidance and without having conducted a thorough analysis and assessment, including the investment instrument and market conditions (macro and microeconomic analysis), among other relvant indicators.
 
 
  
@@ -53,9 +74,9 @@ st.markdown(
     | Technical Analysis | Fudamental Analysis |
     |-----------|-----------|
     |MACD| Profitability Ratios|
-    |SMA| Progit Margin|
+    |SMA| Profit Margin|
     |EMA| Turnover-control ratios|
-    |Bollinger Bands| Laverage and liquity ratios|
+    |Bollinger Bands| Leverage and liquity ratios|
 
     ### And more
     

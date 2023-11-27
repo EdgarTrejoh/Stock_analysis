@@ -2,14 +2,21 @@ import streamlit as st
 
 st.set_page_config(page_title="References", page_icon="🌎")
 
-st.markdown("# :green[3. References 📚 ]")
+st.markdown("## :green[3. Additional Information Resources :nerd_face:]")
 
 "----------"
 
+st.markdown("### Web-Pages :globe_with_meridians:")
+
+
 st.write(
-    """This demo illustrates a combination of plotting and animation with
-Streamlit. We're generating a bunch of random numbers in a loop for around
-5 seconds. Enjoy!"""
+    """
+    Whether you're an investor, student, or financial enthusiast, 
+    these websites offer additional information to help you stay 
+    informed and make well-informed decisions. 
+    Explore the following references to enhance your understanding of 
+    various financial topics:
+    """
 
 )
 
@@ -34,10 +41,11 @@ with columna_1:
     )
     st.markdown(
           """
+          
           - $V_{init}$: Initial value
           - $V_f$: Final value
           - $n$: number of period
-
+          
           
           [Source: Investopedia](https://www.investopedia.com/terms/r/rateofreturn.asp)
           
@@ -72,15 +80,36 @@ with columna_1:
     
     "----------"
      
-    #Bollinger Bands
-    st.markdown(
+    
+#Bollinger Bands
+st.markdown(
         """
         **:green[5. Bollinger Bands]**
         """
      )
-    st.markdown(
+st.markdown(
         """
+        **Bollinger Band®** formula:
         
+        BOLU=MA(TP,n) + m ∗ σ[TP,n]
+
+        BOLD=MA(TP,n) − m ∗σ[TP,n]
+
+        where:
+
+        BOLU=Upper Bollinger Band
+
+        BOLD=Lower Bollinger Band
+
+        MA=Moving average
+        
+        TP (typical price)=(High+Low+Close)÷3
+
+        n=Number of days in smoothing period (typically 20)
+
+        m=Number of standard deviations (typically 2)
+
+        σ[TP,n]=Standard Deviation over last n periods of TP
         
         [Source: Investopedia](https://www.investopedia.com/terms/b/bollingerbands.asp)
         
@@ -88,7 +117,7 @@ with columna_1:
      )
     
 
-    "----------"
+"----------"
 
 with columna_2:
     #Log Return
@@ -120,23 +149,41 @@ with columna_2:
      #Desviación Estándar
     st.markdown(
         """
-        **:green[4. Standard Deviation]**
+        **:green[4. Standard Deviation - Volatility]**
         """
      )
-    st.write(
+    st.markdown(
         """
-        $sigma_{p} = \sigma_{daily}\times \sqrt{p}$
-        - $\sigma_{annually} = \sigma_{daily}\times \sqrt{252}$
+        $vol = \sigma\sqrt{252}$
+
         """
      )
+    st.markdown(
+        """
+        [Source: Investopedia](https://www.investopedia.com/terms/s/standarddeviation.asp)
+        [Volatility](https://www.investopedia.com/terms/v/volatility.asp)
+        """
+    )
 
 
-st.title(":green[Additional Information:]")
+st.subheader(":green[Additional Web Pages:]")
 
 st.markdown(
     """
     1. [Simple Moving Average (SMA): Investopedia](https://www.investopedia.com/terms/s/sma.asp)
-    2. [Gregory Gundersen](https://gregorygundersen.com/blog/2022/02/06/log-returns/")
+    2. [Damodaran ONLINE](https://pages.stern.nyu.edu/~adamodar/)
     3. [yfinance](https://pypi.org/project/yfinance/)
+    4. [Plotly](https://plotly.com/python/)
+
     """
 )
+
+"----------"
+
+st.subheader(":green[Books:]")
+
+st.markdown("""
+        1. Technical Analysis for the Trading Professional 2E (PB). (s. f.). (https://www.mhprofessional.com/technical-analysis-for-the-trading-professional-2e-pb-9781265905873-usa)
+        
+        """
+        )
