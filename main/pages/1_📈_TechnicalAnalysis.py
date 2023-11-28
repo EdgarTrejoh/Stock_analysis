@@ -20,7 +20,7 @@ st.markdown("# :green[1. Technical Analysis 📈]")
 "----------"
 
 #2. Definir las variables
-stocks = ("Microsoft", "Apple", "Google", "Amazon", "Tesla", "Netflix")
+stocks = ("Microsoft", "Apple", "Google", "Amazon", "Disney", "Netflix")
 empresa =st.selectbox(":blue[***Please select an option:***]", stocks) 
 
 if empresa == "Microsoft":
