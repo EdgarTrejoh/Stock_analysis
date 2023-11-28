@@ -31,8 +31,8 @@ elif empresa == "Google":
      ticker = "GOOG"
 elif empresa == "Amazon":
      ticker = "AMZN" 
-elif empresa == "Tesla":
-     ticker = "TSLA"
+elif empresa == "Disney":
+     ticker = "DIS"
 elif empresa == "Netflix":
      ticker =  "NFLX"
 benchmark = "^GSPC"
