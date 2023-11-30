@@ -10,6 +10,15 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 from plotly.subplots import make_subplots
 
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
+
 st.set_page_config(
      page_title="TechnicalAnalysis", 
      page_icon="📈"
