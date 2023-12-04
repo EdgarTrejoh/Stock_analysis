@@ -215,20 +215,23 @@ st.plotly_chart(figura_line, use_container_width=True)
 daily_return_chart = px.line(
      data,
      x='Date',
-     y = 'DailyReturn'
+     y = 'DailyReturn',
+     labels={'Date', 'Daily Return'},
+     title = "f{empresa} - Daily Return"
      )
 
 daily_return_chart.update_yaxes(
-     title_text="RoR (%)"
+     title_text="Daily RoR (%)"
      )
-
 daily_return_chart.update_layout(
-     title_text=f"{empresa} - Daily Return RoR (%)",
-     title_font=dict(
-          color="#027034",
-          size=20
-          )
-     )
+     title = dict(
+          text= f"{empresa} - Daily Return (%)",
+          font = dict(color="#027034", size=20),
+     ),
+     plot_bgcolor ="white",
+     legend = dict(title =dict(text=None)),
+)
+
 
 st.plotly_chart(daily_return_chart)
 
