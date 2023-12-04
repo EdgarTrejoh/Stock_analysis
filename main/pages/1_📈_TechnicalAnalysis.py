@@ -37,6 +37,11 @@ elif empresa == "Netflix":
      ticker =  "NFLX"
 benchmark = "^GSPC"
 
+if 'selected_company' not in st.session_state:
+    st.session_state["selected_company"] = None
+
+st.session_state["selected_company"] = empresa
+
 #3. Generar la información:
 @st.cache_data
 def load_stock(stock):

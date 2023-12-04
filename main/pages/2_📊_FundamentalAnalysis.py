@@ -10,6 +10,8 @@ st.markdown("# :green[2. Fundamental Analysis 📊 ]")
 
 "----------"
 
+st.title( st.session_state["selected_company"])
+
 image = Image.open("./main/img/workin.gif")
 
 #st.markdown(
