@@ -1,4 +1,4 @@
-#1. Instalar las librerías
+#1. Instalar las librerías y configurar la página inicial
 import streamlit as st
 import yfinance as yf
 import numpy as np
