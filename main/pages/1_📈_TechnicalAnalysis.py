@@ -549,13 +549,3 @@ trending_close_price.update_layout(
      )
 
 st.plotly_chart(trending_close_price)
-
-
-#fig, ax = plt.subplots() 
-#data['Pred'].plot(ax=ax, linestyle = "-", lw=2)
-#data['Close'].plot(ax=ax, lw=2)
-#ax.set_title(f'{ticker}')
-#st.pyplot(fig)
-
-#st.write(r2_score(data['Close'], data['Pred']))
-#st.write(lin_model.coef_ * len(data) + 5 + lin_model.intercept_)
