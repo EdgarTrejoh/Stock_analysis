@@ -71,8 +71,8 @@ data['Numbers']  = list(range(0, len(data)))
 X = np.array(data[['Numbers']])
 Y = data["Close"].values
 lin_model = LinearRegression().fit(X ,Y)
-print ('Intercept:', lin_model.intercept_)
-print ('Slope:' , lin_model.coef_)
+#print ('Intercept:', lin_model.intercept_)
+#print ('Slope:' , lin_model.coef_)
 y_pred = lin_model.coef_ * X + lin_model.intercept_
 data['Pred'] = y_pred
 
