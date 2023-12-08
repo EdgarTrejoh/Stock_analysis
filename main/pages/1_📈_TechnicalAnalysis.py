@@ -21,7 +21,7 @@ st.markdown("# :green[1. Technical Analysis 📈]")
 
 #2. Definir las variables
 stocks = ("Microsoft", "Apple", "Google", "Amazon", "Tesla", "Netflix")
-empresa =st.selectbox(":blue[***Please select an option:***]", stocks) 
+empresa =st.selectbox(":blue[***Please select an option:***]", stocks, help = 'Filter report to show only one Stock') 
 
 if empresa == "Microsoft":
      ticker = "MSFT"
@@ -188,10 +188,10 @@ config = {
      'modeBarButtonsToRemove': ['zoom', 'pan'],
 }
 
-figura_line = px.line(
+figura_line = px.area(
      data, 
      x='Date', 
-     y = ['Close']
+     y = ['Close'],
      #y=['Close', 'Open', 'High', 'Low']
      )
 
@@ -209,6 +209,8 @@ figura_line.update_layout(
           size=20
           )
      )
+
+figura_line.update_traces(line=dict(color="black"))
 
 st.plotly_chart(figura_line, use_container_width=True)
 
@@ -251,7 +253,8 @@ grafica_5Y.add_trace(
           x=data['Date'],
           y=data['IncBase5Y'],
           mode="lines",
-          name=empresa
+          name=empresa,
+          line=dict(color='#196FEC'),
           )
      )
 
@@ -261,6 +264,7 @@ grafica_5Y.add_trace(
           y=data_benchmark['IncBase5Y'],
           mode="lines",
           name="S&P500",
+          line=dict(color='#07582B')
           #fill= 'toself'     ,
           )
      )

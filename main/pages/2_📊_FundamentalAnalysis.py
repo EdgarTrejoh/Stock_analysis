@@ -4,6 +4,7 @@ import pandas as pd
 #import numpy as np
 import plotly.graph_objects as go
 import plotly.express as px 
+from plotly.subplots import make_subplots
 
 # Liga de acceso 
 
@@ -20,7 +21,7 @@ st.markdown("# :green[2. Fundamental Analysis 📊]")
 
 "----------"
 
-st.title(st.session_state["selected_company"])
+#st.title(st.session_state["selected_company"])
 
 #@st.cache_data
 def load_financial_statements(): #historical data
@@ -58,11 +59,11 @@ income_statement_2023['Periodo'] = income_statement_2023['Periodo'].astype(str)
 balance_sheet['Periodo'] = balance_sheet['Periodo'].astype(str)
 balance_sheet_2023['Periodo'] = balance_sheet_2023['Periodo'].astype(str)
 
-st.dataframe(income_statement)
-st.dataframe(income_statement_2023)
+#st.dataframe(income_statement)
+#st.dataframe(income_statement_2023)
 
-st.dataframe(balance_sheet)
-st.dataframe(balance_sheet_2023)
+#st.dataframe(balance_sheet)
+#st.dataframe(balance_sheet_2023)
 
 # CAGR 
 # Income Statement
@@ -156,7 +157,7 @@ ROE_components['ROE'] = ROE_components['ROE'].map('{:.2%}'.format)
 ROE_components['ROA'] = ROE_components['Asset Turnover'] * ROE_components['Profit Margin']
 ROE_components['ROA'] = ROE_components['ROA'].map('{:.2%}'.format)
 
-st.dataframe(ROE_components, hide_index=True)
+#st.dataframe(ROE_components, hide_index=True)
 
 # CAGR Dataframe 
 
@@ -174,187 +175,313 @@ CAGR = {
 resume_financial = pd.DataFrame(CAGR, index=["CAGR"]) 
 resume_financial = resume_financial.T
 
-st.markdown("### :green[CARG]")
-
-st.dataframe(resume_financial)
-
 # Visualization 
 
-#Gráficos
+#************************************************
+        
+        # GRÁFICOS
+
+#************************************************
+
+# Crear figura: 
 
 empresa = st.session_state["selected_company"]
 
-#************************************
-        # Profit Margin Chart
-#************************************
+figura = make_subplots(rows=2, cols=2,
+                        row_heights=[0.8, 0.8],
+                        shared_xaxes=False,
+                        subplot_titles=("1. Profit Margin", 
+                                       "2. Asset Turnover", 
+                                       "3. Financial Leverage", 
+                                       "ROE" ),
+                        vertical_spacing=0.3,
+                        horizontal_spacing=0.2,
+                        #print_grid=True
+                        )
 
-ProfitMarginChart = px.line(
-     Profit_margin, 
-     x='Periodo', 
-     y = ['Profit Margin'],
-     title = f"{empresa} - Profit Margin",
-     )
+# Primer Gráfico:
 
-ProfitMarginChart.update_xaxes(title_text="Year")
-
-ProfitMarginChart.update_yaxes(
-    title_text="%",
-    #range=[5, max(Profit_margin['Profit Margin'])]
+figura.add_trace(
+    go.Scatter(
+        x =ROE_components['Periodo'], 
+        y = ROE_components['Profit Margin'],
+        mode= "markers+lines",
+        line=dict(color='royalblue', width=3)
+        ),
+    row=1, col=1  
     )
 
-ProfitMarginChart.update_layout(
-     height = 380,
-     width=480,
-     showlegend= False,
-     title_font=dict(
-          color="#027034",
-          size=20
-          )
-     )
+figura.update_yaxes(title_text="<b>%</b>", row=1, col=1)
 
-ProfitMarginChart.update_traces(line=dict(color='red'),
-                                          mode= "markers+lines")
+# Segundo Gráfico:
+
+figura.add_trace(
+    go.Scatter(
+        x =ROE_components['Periodo'], 
+        y = ROE_components['Asset Turnover'],
+        mode= "markers+lines",
+        line=dict(color='royalblue', width=3)), #dash options include 'dash', 'dot', and 'dashdot'
+    row=2, col=1  
+    )
+
+figura.update_yaxes(title_text="Times", row=2, col=1)
+
+# Tercer Gráfico:
+
+figura.add_trace(
+    go.Scatter(
+        x =ROE_components['Periodo'], 
+        y = ROE_components['Financial Leverage'],
+        mode= "markers+lines",
+        line=dict(color='royalblue', width=3)
+        ),        
+    row=1, col=2 
+    )
+
+figura.update_yaxes(title_text="Times", row=1, col=2)
+
+# Cuarto Gráfico:
+
+figura.add_trace(
+    go.Scatter(
+        x =ROE_components['Periodo'], 
+        y = ROE_components['ROE'],
+        mode= "markers+lines", # lines  - markers
+        line=dict(color='blue', width=3)),
+    row=2, col=2  
+    )
+
+figura.update_yaxes(title_text="<b>%</b>", row=2, col=2)
+
+# Personalizar Gráfico:
+
+figura.update_xaxes(title_text="Year")
+
+figura.update_layout(showlegend=False,
+                     #row_span=[1, 2, 3], col_span=[1, 1, 2],
+                     height=600,
+                     width=800,
+                     title_text =f"{empresa} - Three Determinants of ROE",
+                     title_font=dict(
+                         color="#027034",
+                         size=22
+                     ))
+
+#************************************************
+        
+        # VISUALIZATION
+
+#************************************************
+
+tab1, tab2, tab3, tab4 = st.tabs(["Current Year", "Historical Data", "Financial Ratios", "Delete"])
+
+with tab1:
+    
+    #empresa = st.session_state["selected_company"]
+
+    st.subheader("3Q2023")
+    
+    m1, m2, m3, m4, m5 = st.columns((1,1,1,1,1))
+     
+    m1.write('')
+    m2.metric(label ='Revenues',value = income_statement_2023['Revenues'], delta = 'Revenues' + ' Compared to 1 hour ago', delta_color = 'inverse')
+    m3.metric(label ='Net Income',value = income_statement_2023['Net income'], delta = 'Previous'+' Compared to 1 hour ago', delta_color = 'inverse')
+    m4.metric(label ='Total Cost',value = income_statement_2023['Total costs and expenses'], delta = 'Previous'+' Compared to 1 hour ago', delta_color = 'inverse')
+    m5.write('')
+
+income_statement_2023['Revenues'].map('{:,.2f}'.format)
+    
+
+#************************************************
+        # Tres Determinantes del ROE
+#************************************************
+
+with tab2:
+
+    #empresa = st.session_state["selected_company"]
+
+    st.markdown("## :green[The Levels of Financial Performance]")
+
+    st.markdown("### :green[The Three Determinants of ROE]")
+
+    st.plotly_chart(figura, use_container_width=True)
+
+with tab3:
+
+    empresa = st.session_state["selected_company"]
+
+    st.markdown("## :green[Compound Annual Growth Rate]")
+    st.dataframe(resume_financial)
+
+
+with tab4:
+
+    ProfitMarginChart = px.line(
+        Profit_margin, 
+        x='Periodo', 
+        y = ['Profit Margin'],
+        title = f"{empresa} - Profit Margin",
+        )
+
+    ProfitMarginChart.update_xaxes(title_text="Year")
+
+    ProfitMarginChart.update_yaxes(
+        title_text="%",
+        #range=[5, max(Profit_margin['Profit Margin'])]
+        )
+
+    ProfitMarginChart.update_layout(
+        height = 380,
+        width=480,
+        showlegend= False,
+        title_font=dict(
+            color="#027034",
+            size=20
+            )
+        )
+
+    ProfitMarginChart.update_traces(line=dict(color='red'),
+                                            mode= "markers+lines")
 
 #************************************
         # Asset Turnover Chart
 #************************************
 
-AssetTurnoverChart = px.line(
-    Asset_turnover, 
-    x='Periodo', 
-    y = ['Asset Turnover'],
-    title = f"{empresa} - Asset Turnover",
-    )
-
-AssetTurnoverChart.update_xaxes(title_text="Year")
-
-AssetTurnoverChart.update_yaxes(title_text="Times")
-    
-AssetTurnoverChart.update_layout(
-    height = 380,
-    width=480,
-    showlegend= False,
-    title_font=dict(
-        color="#027034",
-        size=20
+    AssetTurnoverChart = px.line(
+        Asset_turnover, 
+        x='Periodo', 
+        y = ['Asset Turnover'],
+        title = f"{empresa} - Asset Turnover",
         )
-    )
 
-AssetTurnoverChart.update_traces(line=dict(color='#581845'),
-                                line_width=2.8,
-                                line_shape ="linear",
-                                mode= "markers+lines")
+    AssetTurnoverChart.update_xaxes(title_text="Year")
+
+    AssetTurnoverChart.update_yaxes(title_text="Times")
+        
+    AssetTurnoverChart.update_layout(
+        height = 380,
+        width=480,
+        showlegend= False,
+        title_font=dict(
+            color="#027034",
+            size=20
+            )
+        )
+
+    AssetTurnoverChart.update_traces(line=dict(color='#581845'),
+                                    line_width=2.8,
+                                    line_shape ="linear",
+                                    mode= "markers+lines")
 
 #************************************
         # Financial Leverage Chart
 #************************************
 
-FinancialLeverageChart = px.line(
-    Financial_leverage, 
-    x='Periodo', 
-    y = ['Financial Leverage'],
-    title = f"{empresa} - Financial Leverage",
-    )
-
-FinancialLeverageChart.update_xaxes(title_text="Year")
-
-FinancialLeverageChart.update_yaxes(
-    title_text="Times")
-    
-FinancialLeverageChart.update_layout(
-    height = 380,
-    width=480,
-    showlegend= False,
-    title_font=dict(
-        color="#027034",
-        size=20
+    FinancialLeverageChart = px.line(
+        Financial_leverage, 
+        x='Periodo', 
+        y = ['Financial Leverage'],
+        title = f"{empresa} - Financial Leverage",
         )
-    )
 
-FinancialLeverageChart.update_traces(line=dict(color='#581845'),
-                                line_width=2.8,
-                                line_shape ="linear",
-                                mode= "markers+lines")
+    FinancialLeverageChart.update_xaxes(title_text="Year")
+
+    FinancialLeverageChart.update_yaxes(
+        title_text="Times")
+        
+    FinancialLeverageChart.update_layout(
+        height = 380,
+        width=480,
+        showlegend= False,
+        title_font=dict(
+            color="#027034",
+            size=20
+            )
+        )
+
+    FinancialLeverageChart.update_traces(line=dict(color='#581845'),
+                                    line_width=2.8,
+                                    line_shape ="linear",
+                                    mode= "markers+lines")
 
 #************************************
         # ROE Chart
 #************************************
 
-ROEChart = px.line(
-    ROE_components, 
-    x='Periodo', 
-    y = ['ROE', 'ROA'],
-    title = f"{empresa} - ROE and ROA",
-    color_discrete_map={'ROE': 'blue', 'ROA': 'green'}
-    )
-
-ROEChart.update_xaxes(title_text="Year")
-
-ROEChart.update_yaxes(title_text="%")
-
-ROEChart.update_layout(
-    height = 380,
-    width=480,
-    title_font=dict(color="#027034",
-        size=20
+    ROEChart = px.line(
+        ROE_components, 
+        x='Periodo', 
+        y = ['ROE', 'ROA'],
+        title = f"{empresa} - ROE and ROA",
+        color_discrete_map={'ROE': 'blue', 'ROA': 'green'}
         )
-    )
 
-ROEChart.update_traces(line=dict(),
-                                line_width=2.8,
-                                line_shape ="linear",
-                                mode= "markers+lines")
+    ROEChart.update_xaxes(title_text="Year")
 
+    ROEChart.update_yaxes(title_text="%")
+
+    ROEChart.update_layout(
+        height = 380,
+        width=480,
+        title_font=dict(color="#027034",
+            size=20
+            )
+        )
+
+    ROEChart.update_traces(line=dict(),
+                                    line_width=2.8,
+                                    line_shape ="linear",
+                                    mode= "markers+lines")
+                             
 #************************************
         # Show Info
 #************************************
 
-st.markdown("## :green[The Levels of Financial Performance]")
+    st.markdown("## :green[The Levels of Financial Performance]")
 
-st.markdown("## :green[The Three Determinats of ROE]")
+    st.markdown("## :green[The Three Determinats of ROE]")
 
-st.markdown("### :green[1. Profit Margin]")
+    st.markdown("### :green[1. Profit Margin]")
 
-col1, col2 = st.columns([5,2])
+    col1, col2 = st.columns([5,2])
 
-with col1:
-    st.plotly_chart(ProfitMarginChart)
+    with col1:
+        st.plotly_chart(ProfitMarginChart)
 
-with col2:
-    st.subheader("Data")
-    st.dataframe(Profit_margin, hide_index=True)
-    
+    with col2:
+        st.subheader("Data")
+        st.dataframe(Profit_margin, hide_index=True)
+        
 
-st.markdown("### :green[2. Asset Turnover]")
+    st.markdown("### :green[2. Asset Turnover]")
 
-col3, col4 = st.columns([5,2])
+    col3, col4 = st.columns([5,2])
 
-with col3:
-    st.plotly_chart(AssetTurnoverChart)
+    with col3:
+        st.plotly_chart(AssetTurnoverChart)
 
-with col4:
-    st.subheader("Data")
-    st.dataframe(Asset_turnover, hide_index=True)
+    with col4:
+        st.subheader("Data")
+        st.dataframe(Asset_turnover, hide_index=True)
 
-st.markdown("### :green[3. Financial Leverage]")
+    st.markdown("### :green[3. Financial Leverage]")
 
-col5, col6 = st.columns([5,2])
+    col5, col6 = st.columns([5,2])
 
-with col5:
-    st.plotly_chart(FinancialLeverageChart)
+    with col5:
+        st.plotly_chart(FinancialLeverageChart)
 
-with col6:
-    st.subheader("Data")
-    st.dataframe(Financial_leverage, hide_index=True)
+    with col6:
+        st.subheader("Data")
+        st.dataframe(Financial_leverage, hide_index=True)
 
-st.markdown("### :green[ROE - ROA]")
+    st.markdown("### :green[ROE - ROA]")
 
-col7, col8 = st.columns([5,2])
+    col7, col8 = st.columns([5,2])
 
-with col7:
-    st.plotly_chart(ROEChart)
+    with col7:
+        st.plotly_chart(ROEChart)
 
-with col8:
-    st.subheader("Data")
-    st.dataframe(ROE_components[['Periodo', 'ROE', 'ROA']], hide_index=True)
-
+    with col8:
+        st.subheader("Data")
+        st.dataframe(ROE_components[['Periodo', 'ROE', 'ROA']], hide_index=True)
