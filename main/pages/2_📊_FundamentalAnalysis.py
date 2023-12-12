@@ -403,7 +403,7 @@ with current_year:
     n2.metric(':blue[Total Costs]', '{:.1f}%'.format((total_costs/income_statement_2023['Revenues'].iloc[0])*100),label_visibility="hidden")
     n3.metric(':blue[Net Income]', '{:.1f}%'.format((income_statement_2023['Net income'].iloc[0]/income_statement_2023['Revenues'].iloc[0])*100),label_visibility="hidden")
     c2.write("")
-
+    
     with st.expander(" :green[The Levels of Financial Performance]"):
         
         st.markdown("### :green[The Three Determinants of ROE]")
@@ -423,6 +423,33 @@ with current_year:
         roe_3.metric(':blue[ROA]', ROE_components_2023['ROA'].iloc[0])
         roe_4.write("")
 
+        st.divider()
+
+        st.latex(
+            r'''
+
+               ROE = (\frac{Net Income}{Sales})x (\frac{Sales}{Assets})x (\frac{Assests}{Shareholder´s Equity})                       
+            
+            '''
+        )
+
+        st.divider()
+        
+        st.latex(
+            r'''
+
+               ROA = ({Profit Margin})x ({Asset Turnover})   
+            '''
+        )
+
+    with st.expander(" :green[Balance Sheet Rarios]"):
+        balance_1, balance_2, balance_3, balance_4 = st.columns(4)
+
+        balance_1.write("")
+        balance_2.metric(":blue[Debt-to-assets-ratio]",'{:,.2%}'.format(balance_sheet_2023['Totalassets'].iloc[0]))
+        balance_3.metric(":blue[Debt-to.equity-ratio]",'{:,.2%}'.format(balance_sheet_2023['Totalassets'].iloc[0]))
+        balance_4.write("")
+    
     with st.expander(" :green[Liquidity Rarios]"):
         
         #st.markdown("### :green[The Three Determinants of ROE]")
