@@ -37,7 +37,7 @@ st.markdown("""
             """
 )
 
-st.markdown("##### :green[v1.0. Technical Anaylsis]")
+st.markdown("##### :green[v2.0. Technical & Fundamental Anaylsis]")
 
 st.markdown(
     """
