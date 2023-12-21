@@ -10,6 +10,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 from plotly.subplots import make_subplots
 
+
 st.set_page_config(
      page_title="TechnicalAnalysis", 
      page_icon="📈"
@@ -26,12 +27,21 @@ hide_st_style = """
             """
 st.markdown(hide_st_style, unsafe_allow_html=True)
 
+<<<<<<< HEAD
 "----------"
 
 #2. Definir las variables
 #stocks = ("Microsoft", "Apple", "Google", "Amazon", "Tesla", "Netflix")
 stocks = ("Microsoft", "Google")
 empresa =st.selectbox(":blue[***Please select an option:***]", stocks, help = 'Filter report to show only one Stock') 
+=======
+
+"----------"
+
+#2. Definir las variables
+stocks = ("Microsoft", "Apple", "Google", "Amazon", "Disney", "Netflix")
+empresa =st.selectbox(":blue[***Please select an option:***]", stocks) 
+>>>>>>> 8f7e71ed9891b833a53591cd55f5f6f2c7259501
 
 if empresa == "Microsoft":
      ticker = "MSFT"
