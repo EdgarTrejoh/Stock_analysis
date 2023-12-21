@@ -20,7 +20,8 @@ st.markdown("# :green[1. Technical Analysis 📈]")
 "----------"
 
 #2. Definir las variables
-stocks = ("Microsoft", "Apple", "Google", "Amazon", "Tesla", "Netflix")
+#stocks = ("Microsoft", "Apple", "Google", "Amazon", "Tesla", "Netflix")
+stocks = ("Microsoft", "Google")
 empresa =st.selectbox(":blue[***Please select an option:***]", stocks, help = 'Filter report to show only one Stock') 
 
 if empresa == "Microsoft":
@@ -168,8 +169,6 @@ st.markdown(
 st.dataframe(resume, hide_index= False, width=340, height=455)
 
 #metricas = data['Close'].describe() 
-#st.text(metricas)
-#st.dataframe(data)
 
 st.text(len(data)* "*")
 
@@ -233,7 +232,6 @@ daily_return_chart.update_layout(
      plot_bgcolor ="white",
      legend = dict(title =dict(text=None)),
 )
-
 
 st.plotly_chart(daily_return_chart)
 

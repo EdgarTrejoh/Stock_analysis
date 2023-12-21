@@ -7,7 +7,6 @@ from plotly.subplots import make_subplots
 from millify import prettify
 
 # Liga de acceso 
-
 layout = "https://bit.ly/financial_statements_analysis"
 
 # Configuración de la página inicial
@@ -55,12 +54,6 @@ data_load_state.markdown(':blue[Loading data... done!]')
 income_statement['Periodo'] = income_statement['Periodo'].astype(str)
 income_statement_2023['Periodo'] = income_statement_2023['Periodo'].astype(str)
 balance_sheet['Periodo'] = balance_sheet['Periodo'].astype(str)
-#balance_sheet_2023['Periodo'] = balance_sheet_2023['Periodo'].astype(str)
-
-#st.dataframe(income_statement)
-#st.dataframe(income_statement_2023)
-#st.dataframe(balance_sheet)
-#st.dataframe(balance_sheet_2023)
 
 # CAGR 
 # Income Statement
@@ -183,7 +176,11 @@ ROE_components['ROA'] = ROE_components['ROA'].map('{:.2%}'.format)
 
 ROE_components_2023['ROA'] = ROE_components_2023['Asset Turnover'] * ROE_components_2023['Profit Margin']
 ROE_components_2023['ROA'] = ROE_components_2023['ROA'].map('{:.2%}'.format)
-#ROE_components_2023 = ROE_components_2023.T.reset_index()
+
+# Balance Sheet Ratios
+
+Debt_to_assets_ratio_2023 = (balance_sheet_2023['Totalliabilities'].iloc[0])/(balance_sheet_2023['Totalassets'].iloc[0])
+Debt_to_equity_ratio_2023 = (balance_sheet_2023['Totalliabilities'].iloc[0])/(balance_sheet_2023['Totalstockholders’equity'].iloc[0])
 
 # Liquidity Ratios
 current_ratio = balance_sheet_2023['Totalcurrentassets'].div(balance_sheet_2023['Totalcurrentliabilities'])
@@ -240,7 +237,7 @@ figura.add_trace(
         x =ROE_components['Periodo'], 
         y = ROE_components['Profit Margin'],
         mode= "markers+lines",
-        line=dict(color='royalblue', width=3)
+        line=dict(color='#15C463', width=3)
         ),
     row=1, col=1  
     )
@@ -254,7 +251,7 @@ figura.add_trace(
         x =ROE_components['Periodo'], 
         y = ROE_components['Asset Turnover'],
         mode= "markers+lines",
-        line=dict(color='royalblue', width=3)), #dash options include 'dash', 'dot', and 'dashdot'
+        line=dict(color='#08781D', width=3)), #dash options include 'dash', 'dot', and 'dashdot'
     row=2, col=1  
     )
 
@@ -267,7 +264,7 @@ figura.add_trace(
         x =ROE_components['Periodo'], 
         y = ROE_components['Financial Leverage'],
         mode= "markers+lines",
-        line=dict(color='royalblue', width=3)
+        line=dict(color='#4CA25C ', width=3)
         ),        
     row=1, col=2 
     )
@@ -281,7 +278,7 @@ figura.add_trace(
         x =ROE_components['Periodo'], 
         y = ROE_components['ROE'],
         mode= "markers+lines", # lines  - markers
-        line=dict(color='blue', width=3)),
+        line=dict(color='#5CA57D', width=3)),
     row=2, col=2  
     )
 
@@ -295,11 +292,40 @@ figura.update_layout(showlegend=False,
                      #row_span=[1, 2, 3], col_span=[1, 1, 2],
                      height=600,
                      width=800,
-                     title_text =f"{empresa} - Three Determinants of ROE",
+                     title_text =f"<b>{empresa}</b> - Three Determinants of ROE",
                      title_font=dict(
                          color="#027034",
-                         size=22
-                     ))
+                         size=22),
+                    annotations=[
+                        dict(xref='paper', yref='paper',
+                            x=0, y=1.05,
+                            xanchor='left', yanchor='middle',
+                            text='<b>1. Profit Margin</b>',
+                            font=dict(color='#6376F3', size=16)),
+                        dict(
+                            xref='paper', yref='paper',
+                            x=0.5, y=1.05,
+                            xanchor='center', yanchor='middle',
+                            text='<b>2. Asset Turnover</b>',
+                            font=dict(color='#6376F3', size=16)
+                        ),
+                        dict(
+                            xref='paper', yref='paper',
+                            x=0, y=0.48,
+                            xanchor='left', yanchor='middle',
+                            text='<b>3. Financial Leverage</b>',
+                            font=dict(color='#6376F3', size=16)
+                        ),
+                        dict(
+                            xref='paper', yref='paper',
+                            x=0.5, y=0.48,
+                            xanchor='center', yanchor='middle', #top - bottom
+                            text='<b>4. ROE</b>',
+                            font=dict(color='#6376F3', size=16)
+                        ),
+                        ]
+                    )
+
 
 #***************************************
        # CAGR Chart
@@ -320,10 +346,12 @@ years = income_statement['Periodo']
 Revenues  = income_statement['Revenues']
 CostOfRevenues = income_statement['Cost of revenues']
 
+CostOfRevenues = CostOfRevenues*-1 
+
 revenues_chart.add_trace(go.Bar(
     x=years,
     y=CostOfRevenues,
-    base=CostOfRevenues*-1,
+    base=0,
     marker_color='red',
     name='Cost of Revenues'))
 
@@ -339,7 +367,13 @@ revenues_chart.update_layout(title_text=f"{empresa} - Revenues - Cost of Revenue
                              title_font=dict(
             color="#027034",
             size=20
-            ))
+            ),
+            xaxis_title="Year",
+            yaxis_title="Amount",
+            legend_title="Components",
+            #barmode='stack',  # 'stack' apilará las barras
+            #yaxis=dict(range=[100, max(Revenues.max(), -CostOfRevenues.min())]),  # Ajusta el rango del eje y
+    )
 
 #*************************************
         # CAGR Chart
@@ -376,16 +410,17 @@ CAGR_chart.update_layout(
         # VISUALIZATION
 #************************************************
 
-current_year, historical_data, resume_CAGR = st.tabs(["Current Year", 
-                                                                "Historical Data", 
-                                                                "CAGR", 
+current_year, historical_data, resume_CAGR = st.tabs([":date: Current Year", 
+                                                                ":clipboard: Historical Data", 
+                                                                ":chart_with_upwards_trend: CAGR", 
                                                                 ])
 #current_revenue = income_statement_2023['Revenues']
 
 with current_year:
     
-    st.markdown(f"## :green[{empresa} - 3Q2023]")
-    
+    st.markdown(f"### :green[{empresa} - 3Q2023 :pushpin:    ]")
+    st.markdown(f":blue[(in millions)]")
+
     v1, m1, m2, m3, v2 = st.columns(5)
 
     total_costs = income_statement_2023['Revenues'].iloc[0]-income_statement_2023['Net income'].iloc[0]
@@ -404,7 +439,7 @@ with current_year:
     n3.metric(':blue[Net Income]', '{:.1f}%'.format((income_statement_2023['Net income'].iloc[0]/income_statement_2023['Revenues'].iloc[0])*100),label_visibility="hidden")
     c2.write("")
     
-    with st.expander(" :green[The Levels of Financial Performance]"):
+    with st.expander(" :green[Return on Equity]"):
         
         st.markdown("### :green[The Three Determinants of ROE]")
 
@@ -434,7 +469,7 @@ with current_year:
         )
 
         st.divider()
-        
+             
         st.latex(
             r'''
 
@@ -442,13 +477,33 @@ with current_year:
             '''
         )
 
-    with st.expander(" :green[Balance Sheet Rarios]"):
+    with st.expander(" :green[Balance Sheet Ratios]"):
         balance_1, balance_2, balance_3, balance_4 = st.columns(4)
-
-        balance_1.write("")
-        balance_2.metric(":blue[Debt-to-assets-ratio]",'{:,.2%}'.format(balance_sheet_2023['Totalassets'].iloc[0]))
-        balance_3.metric(":blue[Debt-to.equity-ratio]",'{:,.2%}'.format(balance_sheet_2023['Totalassets'].iloc[0]))
+ 
+        balance_1.write("") 
+        balance_2.metric(":blue[Debt-to-assets-ratio]",'{:,.2%}'.format(Debt_to_assets_ratio_2023))
+        balance_3.metric(":blue[Debt-to.equity-ratio]",'{:,.2%}'.format(Debt_to_equity_ratio_2023))
         balance_4.write("")
+
+        st.divider()
+
+        st.latex(
+            r'''
+
+               Debt-to-assets-ratio = (\frac{Total-Liabilities}{Total-Assets})                      
+            
+            '''
+        )
+
+        st.divider()
+             
+        st.latex(
+            r'''
+
+               Debt-to-equity-ratio = (\frac{Total-Liabilities}{Total-Stockholders’-Equity})
+
+            '''
+        )
     
     with st.expander(" :green[Liquidity Rarios]"):
         
@@ -459,6 +514,28 @@ with current_year:
         column2.metric(":blue[Current Ratio]", '{:,.2f}'.format(df_liquidity['Current Ratio'].iloc[0]))
         column3.metric(':blue[Acid Test]', '{:,.2f}'.format(df_liquidity['Acid Test'].iloc[0]))
         column4.write("")
+
+        st.divider()
+
+        st.latex(
+            r'''
+
+               Current-Ratio = (\frac{Current Assets}{Current Liabilities})                      
+            
+            '''
+        )
+
+        st.divider()
+             
+        st.latex(
+            r'''
+
+               Acid-Test = (\frac{Current Assets - Inventory}{Current Liabilities})
+
+            '''
+        )
+
+    st.markdown(":blue[Source: Financial Statements]")
 
 #************************************************
         # Tres Determinantes del ROE
@@ -472,7 +549,7 @@ with historical_data:
 
         st.plotly_chart(revenues_chart, use_container_width=True)
 
-    with st.expander(" :green[The Levels of Financial Performance]"):
+    with st.expander(" :green[Return on Equity]"):
         
         st.markdown("### :green[The Three Determinants of ROE]")
 
@@ -490,4 +567,3 @@ with resume_CAGR:
     with data:
         st.subheader("Data")
         st.dataframe(resume_financial, hide_index=True, width=190)
-      

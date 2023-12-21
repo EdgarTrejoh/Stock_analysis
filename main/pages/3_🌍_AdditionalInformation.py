@@ -187,3 +187,9 @@ st.markdown("""
         
         """
         )
+
+st.markdown("""
+        2. Analysis for Financial Management. (2022, 21 enero). (https://www.mheducation.com/highered/product/analysis-financial-management-higgins-koski/M9781260772364.html)
+        
+        """
+        )
