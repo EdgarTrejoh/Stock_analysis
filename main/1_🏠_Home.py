@@ -18,6 +18,16 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
+
+
 #st.write("# Welcome to Financials analysis for the main stocks in the S&P 500 v1.0 ! 🚀")
 
 st.markdown("# :green[Welcome to Financials analysis for the main stocks in the S&P 500 🚀]")
