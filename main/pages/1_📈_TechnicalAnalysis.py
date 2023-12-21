@@ -17,6 +17,15 @@ st.set_page_config(
 
 st.markdown("# :green[1. Technical Analysis 📈]")
 
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
+
 "----------"
 
 #2. Definir las variables
@@ -32,8 +41,8 @@ elif empresa == "Google":
      ticker = "GOOG"
 elif empresa == "Amazon":
      ticker = "AMZN" 
-elif empresa == "Tesla":
-     ticker = "TSLA"
+elif empresa == "Disney":
+     ticker = "DIS"
 elif empresa == "Netflix":
      ticker =  "NFLX"
 benchmark = "^GSPC"
